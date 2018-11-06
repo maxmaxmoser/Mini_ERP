@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MiniERP
+﻿namespace MiniERP
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private readonly int efficienceQuestionA = 100;
+        private readonly int efficientQuestionB = 80;
+
+        private static void Main(string[] args)
         {
         }
     }
