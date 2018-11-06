@@ -1,0 +1,36 @@
+{
+  "cas" [
+    {
+      "id": 1,
+      "date_depart": "01/06/2018",
+      "nb_dev": 3,
+      "nb_chef_proj": 1,
+      "efficience": 100,
+      "duree_embauche": 3,
+      "duree_avt_efficacite": 1,
+      "projects": "airbus,nintendo, htc vr"
+    },
+
+    {
+      "id" : 2,
+      "date_depart": "01/06/2018",
+      "nb_dev": 3,
+      "nb_chef_proj": 1,
+      "efficience": 80,
+      "duree_embauche": 3,
+      "duree_avt_efficacite": 1,
+      "projects": "airbus,nintendo, htc vr"
+    },
+
+    {
+      "id" : 3,
+      "date_depart": "01/06/2018",
+      "nb_dev": 3,
+      "nb_chef_proj": 1,
+      "efficience": 120,
+      "duree_embauche": 3,
+      "duree_avt_efficacite": 1,
+      "projects": "airbus,nintendo, htc vr, soni"
+    }
+  ]
+}

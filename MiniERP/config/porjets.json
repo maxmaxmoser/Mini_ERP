@@ -1,0 +1,31 @@
+{
+  "projets": [
+    {
+      "nom": "airbus",
+      "nb_dev_days": 150,
+      "nb_mgt_days": 40,
+      "deadline": "01/12/2018"
+    },
+
+    {
+      "nom": "ninetendo",
+      "nb_dev_days": 75,
+      "nb_mgt_days": 25,
+      "deadline": "01/09/2018"
+    },
+
+    {
+      "nom": "htc vr",
+      "nb_dev_days": 150,
+      "nb_mgt_days": 45,
+      "deadline": "01/01/2019"
+    },
+
+    {
+      "nom": "soni",
+      "nb_dev_days": 300,
+      "nb_mgt_days": 80,
+      "deadline": "01/01/2019"
+    }
+  ]
+}
