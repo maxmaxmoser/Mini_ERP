@@ -1,5 +1,5 @@
 {
-  "projets": [
+  "projets" : [
     {
       "nom": "airbus",
       "nb_dev_days": 150,
