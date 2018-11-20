@@ -1,17 +1,17 @@
 {
-  "projets" : [
-    {
-      "nom": "airbus",
-      "nb_dev_days": 150,
-      "nb_mgt_days": 40,
-      "deadline": "01/12/2018"
-    },
-
+  "projets": [
     {
       "nom": "ninetendo",
       "nb_dev_days": 75,
       "nb_mgt_days": 25,
       "deadline": "01/09/2018"
+    },
+
+    {
+      "nom": "airbus",
+      "nb_dev_days": 150,
+      "nb_mgt_days": 40,
+      "deadline": "01/12/2018"
     },
 
     {

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using FluentDateTime;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -21,7 +22,58 @@ namespace MiniERP
             {
                 string json = r.ReadToEnd();
                 CasList items = JsonConvert.DeserializeObject<CasList>(json);
+
+                foreach(Cas cas in items.cas)
+                {
+                    if(cas.id == response)
+                    {
+                        CheckLivraisons(cas);
+                    }
+                }
             }
+        }
+
+        private static string CheckLivraisons(Cas cas)
+        {
+            DateTime dateDebut = DateTime.Parse(cas.date_depart);
+            List<Projet> projetsCas = new List<Projet>();
+
+            using (StreamReader r = new StreamReader("..\\..\\config\\projets.json"))
+            {
+                string json = r.ReadToEnd();
+                ProjetsList items = JsonConvert.DeserializeObject<ProjetsList>(json);
+            
+                var nomProjetsCas = new List<string>(cas.projects.Split(','));
+                
+                foreach (var projet in items.projets)
+                {
+                    if(nomProjetsCas.Contains(projet.nom))
+                    {
+                        projetsCas.Add(projet);
+                    }
+                }
+
+                foreach (Projet proj in projetsCas)
+                {
+                    DateTime finPrevueDev = dateDebut.AddBusinessDays(proj.nb_dev_days / cas.nb_dev).AddDays(-1);
+                    DateTime finPrevueMgt = dateDebut.AddBusinessDays(proj.nb_mgt_days / cas.nb_chef_proj).AddDays(-1);
+
+                    if (finPrevueDev > finPrevueMgt)
+                    {
+                        Console.WriteLine(finPrevueDev);
+                        dateDebut = finPrevueDev;
+                    }
+                    else
+                    {
+                        Console.WriteLine(finPrevueMgt);
+                        dateDebut = finPrevueMgt;
+                    }
+
+                }
+            }
+            return "";
         }
     }
 }
+
+// Quand deadline égale, on priorise le projet qui prend le moins de temps

@@ -8,7 +8,7 @@
       "efficience": 100,
       "duree_embauche": 3,
       "duree_avt_efficacite": 1,
-      "projects": "airbus,nintendo, htc vr"
+      "projects": "airbus,ninetendo,htc vr"
     },
 
     {
@@ -19,7 +19,7 @@
       "efficience": 80,
       "duree_embauche": 3,
       "duree_avt_efficacite": 1,
-      "projects": "airbus,nintendo, htc vr"
+      "projects": "airbus,ninetendo,htc vr"
     },
 
     {
@@ -30,7 +30,7 @@
       "efficience": 120,
       "duree_embauche": 3,
       "duree_avt_efficacite": 1,
-      "projects": "airbus,nintendo, htc vr, soni"
+      "projects": "airbus,ninetendo,htc vr,soni"
     }
   ]
 }
