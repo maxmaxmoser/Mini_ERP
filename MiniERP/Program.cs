@@ -53,7 +53,10 @@ namespace MiniERP
                         projetsCas.Add(projet);
                     }
                 }
-
+                
+                bool retard = false;
+                bool retardDev = false;
+                bool retardMgt = false;
                 foreach (Projet proj in projetsCas)
                 {
                     // Deadline du projet
@@ -80,9 +83,90 @@ namespace MiniERP
                         Console.BackgroundColor = ConsoleColor.Red;
                         Console.WriteLine("/!\\ Projet " + proj.nom + " : RETARD DE LIVRAISON /!\\");
                         Console.BackgroundColor = ConsoleColor.Black;
+
+                        retard = true;
+
+                        if(deadline < finPrevueDev)
+                        {
+                            retardDev = true;
+                        }
+
+                        if(deadline < finPrevueMgt)
+                        {
+                            retardMgt = true;
+                        }
                     }
 
-                    dateDebut.AddDays(1);
+                    dateDebut = dateDebut.AddBusinessDays(1);
+                }
+
+                if (retard)
+                {
+                    int nbDevSupp = 0;
+                    int nbMgtSupp = 0;
+
+                    // Tant que retard, on recalcule
+                    while(retard)
+                    {
+                        if(retardDev && retardMgt)
+                        {
+                            nbDevSupp++;
+                            nbMgtSupp++;
+                        }
+                        else if(retardDev)
+                        {
+                            nbDevSupp++;
+                        }
+                        else if(retardMgt)
+                        {
+                            nbMgtSupp++;
+                        }
+
+                        // on remet les compteurs à zéro
+                        dateDebut = DateTime.Parse(cas.date_depart);
+                        retard = false;
+                        retardDev = false;
+                        retardMgt = false;
+                        foreach (Projet proj in projetsCas)
+                        {
+                            // Deadline du projet
+                            DateTime deadline = DateTime.Parse(proj.deadline);
+
+                            // Calcul des dates prévues de fin de projet
+                            float flottant = proj.nb_dev_days / (cas.nb_dev + nbDevSupp);
+                            DateTime finPrevueDev = dateDebut.AddBusinessDays(proj.nb_dev_days / (cas.nb_dev + nbDevSupp)).AddDays(-1);
+                            DateTime finPrevueMgt = dateDebut.AddBusinessDays(proj.nb_mgt_days / (cas.nb_chef_proj + nbMgtSupp)).AddDays(-1);
+
+                            if (finPrevueDev > finPrevueMgt)
+                            {
+                                dateDebut = finPrevueDev;
+                            }
+                            else
+                            {
+                                dateDebut = finPrevueMgt;
+                            }
+
+                            // Check si retard de livraison
+                            if (deadline < finPrevueDev || deadline < finPrevueMgt)
+                            {
+                                retard = true;
+
+                                if (deadline < finPrevueDev)
+                                {
+                                    retardDev = true;
+                                }
+
+                                if (deadline < finPrevueMgt)
+                                {
+                                    retardMgt = true;
+                                }
+                            }
+
+                            dateDebut.AddDays(1);
+                        }
+                    }
+
+                    Console.WriteLine("Cas rélaisable avec ressources supplémentaires suivantes: " + nbDevSupp + " développeur(s); " + nbMgtSupp + " chefs de projet(s).");
                 }
             }
             return "";
