@@ -56,20 +56,33 @@ namespace MiniERP
 
                 foreach (Projet proj in projetsCas)
                 {
+                    // Deadline du projet
+                    DateTime deadline = DateTime.Parse(proj.deadline);
+
+                    // Calcul des dates prévues de fin de projet
                     DateTime finPrevueDev = dateDebut.AddBusinessDays(proj.nb_dev_days / cas.nb_dev).AddDays(-1);
                     DateTime finPrevueMgt = dateDebut.AddBusinessDays(proj.nb_mgt_days / cas.nb_chef_proj).AddDays(-1);
 
                     if (finPrevueDev > finPrevueMgt)
                     {
                         Console.WriteLine(finPrevueDev);
-                        dateDebut = finPrevueDev.AddDays(1);
+                        dateDebut = finPrevueDev;
                     }
                     else
                     {
                         Console.WriteLine(finPrevueMgt);
-                        dateDebut = finPrevueMgt.AddDays(1);
+                        dateDebut = finPrevueMgt;
                     }
 
+                    // Check si retard de livraison
+                    if(deadline < finPrevueDev || deadline < finPrevueMgt)
+                    {
+                        Console.BackgroundColor = ConsoleColor.Red;
+                        Console.WriteLine("/!\\ Projet " + proj.nom + " : RETARD DE LIVRAISON /!\\");
+                        Console.BackgroundColor = ConsoleColor.Black;
+                    }
+
+                    dateDebut.AddDays(1);
                 }
             }
             return "";
