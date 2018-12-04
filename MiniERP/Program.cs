@@ -28,6 +28,7 @@ namespace MiniERP
                     if(cas.id == response)
                     {
                         CheckLivraisons(cas);
+                        Console.Read();
                     }
                 }
             }
@@ -61,12 +62,12 @@ namespace MiniERP
                     if (finPrevueDev > finPrevueMgt)
                     {
                         Console.WriteLine(finPrevueDev);
-                        dateDebut = finPrevueDev;
+                        dateDebut = finPrevueDev.AddDays(1);
                     }
                     else
                     {
                         Console.WriteLine(finPrevueMgt);
-                        dateDebut = finPrevueMgt;
+                        dateDebut = finPrevueMgt.AddDays(1);
                     }
 
                 }
