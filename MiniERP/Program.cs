@@ -13,7 +13,6 @@ namespace MiniERP
             Console.WriteLine("=================================================");
             Console.WriteLine("========= Jeuxsuilpatron MiniERP project ========");
             Console.WriteLine("=================================================");
-            Console.WriteLine("Quel cas voulez-vous traiter?");
 
             using (StreamReader r = new StreamReader("..\\..\\config\\cas.json"))
             {
@@ -21,17 +20,42 @@ namespace MiniERP
                 CasList items = JsonConvert.DeserializeObject<CasList>(json);
 
                 Console.Write(items.ToString());
-                Console.Write("-->");
-                int response = int.Parse(Console.ReadLine());
 
-                foreach (Cas cas in items.Cas)
+                string continuer = "y";
+                while(continuer.Equals("y"))
                 {
-                    if(cas.id == response)
+                    Console.WriteLine("\nQuel cas voulez-vous traiter?");
+                    Console.Write("-->");
+                    int response;
+                    while (!int.TryParse(Console.ReadLine(), out response)
+                        || response > items.Count()
+                        || response < 1)
                     {
-                        CheckLivraisons(cas);
-                        Console.Read();
+                        Console.WriteLine("Veuillez saisir l'identifiant numérique d'un des cas");
+                        Console.Write("-->");
                     }
-                }
+
+                    foreach (Cas cas in items.Cas)
+                    {
+                        if (cas.id == response)
+                        {
+                            CheckLivraisons(cas);
+                        }
+                    }
+
+                    Console.Write("Voulez-vous continuer?(y/n) ");
+                    continuer = Console.ReadLine();
+                    while (!continuer.Equals("y") && !continuer.Equals("n"))
+                    {
+                        Console.Write("Voulez-vous continuer?(y/n) ");
+                        continuer = Console.ReadLine();
+                    }
+
+                    if(continuer.Equals("n"))
+                    {
+                        Environment.Exit(0);
+                    }
+                }                
             }
         }
 
@@ -88,7 +112,7 @@ namespace MiniERP
                     if(deadline < finPrevueDev || deadline < finPrevueMgt)
                     {
                         Console.BackgroundColor = ConsoleColor.Red;
-                        Console.WriteLine("/!\\ Projet " + proj.nom + " : RETARD DE LIVRAISON /!\\");
+                        Console.WriteLine("/!\\ Projet " + proj.nom + " : RETARD DE LIVRAISON /!\\ (deadline le " + proj.deadline + ")");
                         Console.BackgroundColor = ConsoleColor.Black;
 
                         retard = true;

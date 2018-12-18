@@ -27,6 +27,11 @@ namespace MiniERP
     {
         public List<Cas> Cas { get; set; }
 
+        public int Count()
+        {
+            return Cas.Count();
+        }
+
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
