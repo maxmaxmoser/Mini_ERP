@@ -86,8 +86,21 @@ namespace MiniERP
                 foreach (Projet proj in projetsCas)
                 {
                     // Application du coefficient d'efficience
-                    proj.nb_dev_days = int.Parse((proj.nb_dev_days * coeffEfficience).ToString());
-                    proj.nb_mgt_days = int.Parse((proj.nb_mgt_days * coeffEfficience).ToString());
+                    decimal nb_dev_days = (decimal)(proj.nb_dev_days * coeffEfficience);
+                    decimal nb_mgt_days = (decimal)(proj.nb_mgt_days * coeffEfficience);
+
+                    if ((nb_dev_days - Math.Truncate(nb_dev_days) > 0))
+                    {
+                        nb_dev_days = (int)nb_dev_days + 1;
+                    }
+
+                    if ((nb_mgt_days - Math.Truncate(nb_mgt_days) > 0))
+                    {
+                        nb_mgt_days = (int)nb_mgt_days + 1;
+                    }
+
+                    proj.nb_dev_days = int.Parse(nb_dev_days.ToString());
+                    proj.nb_mgt_days = int.Parse(nb_mgt_days.ToString());
 
                     // Deadline du projet
                     DateTime deadline = DateTime.Parse(proj.deadline);
