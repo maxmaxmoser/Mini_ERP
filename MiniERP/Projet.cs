@@ -12,10 +12,27 @@ namespace MiniERP
         public int nb_dev_days { get; set; }
         public int nb_mgt_days { get; set; }
         public string deadline { get; set; }
+
+        public override string ToString()
+        {
+            return nom;
+        }
     }
 
     public class ProjetsList
     {
-        public List<Projet> projets { get; set; }
+        public List<Projet> Projets { get; set; }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            foreach (Projet proj in Projets)
+            {
+                sb.Append("[" + proj.ToString() + "]");
+            }
+
+            return sb.ToString();
+        }
     }
 }

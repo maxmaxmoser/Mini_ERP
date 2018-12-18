@@ -10,20 +10,21 @@ namespace MiniERP
     {
         private static void Main(string[] args)
         {
+            Console.WriteLine("=================================================");
             Console.WriteLine("========= Jeuxsuilpatron MiniERP project ========");
+            Console.WriteLine("=================================================");
             Console.WriteLine("Quel cas voulez-vous traiter?");
-            Console.WriteLine("\t1 - Cas 1 : 100% efficience, 3 projets");
-            Console.WriteLine("\t2 - Cas 2 : 80% efficience, 3 projets");
-            Console.WriteLine("\t3 - Cas 3 : 120% efficience, 4 projets");
 
-            Console.Write("-->");
-            int response = int.Parse(Console.ReadLine());
             using (StreamReader r = new StreamReader("..\\..\\config\\cas.json"))
             {
                 string json = r.ReadToEnd();
                 CasList items = JsonConvert.DeserializeObject<CasList>(json);
 
-                foreach(Cas cas in items.cas)
+                Console.Write(items.ToString());
+                Console.Write("-->");
+                int response = int.Parse(Console.ReadLine());
+
+                foreach (Cas cas in items.Cas)
                 {
                     if(cas.id == response)
                     {
@@ -47,7 +48,7 @@ namespace MiniERP
             
                 var nomProjetsCas = new List<string>(cas.projects.Split(','));
                 
-                foreach (var projet in items.projets)
+                foreach (var projet in items.Projets)
                 {
                     if(nomProjetsCas.Contains(projet.nom))
                     {
@@ -71,6 +72,7 @@ namespace MiniERP
                     DateTime finPrevueDev = dateDebut.AddBusinessDays(proj.nb_dev_days / cas.nb_dev).AddDays(-1);
                     DateTime finPrevueMgt = dateDebut.AddBusinessDays(proj.nb_mgt_days / cas.nb_chef_proj).AddDays(-1);
 
+                    Console.Write("Date de fin prévue - projet " + proj.nom + ": ");
                     if (finPrevueDev > finPrevueMgt)
                     {
                         Console.WriteLine(finPrevueDev);
