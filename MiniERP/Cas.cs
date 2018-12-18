@@ -12,7 +12,7 @@ namespace MiniERP
         public string date_depart { get; set; }
         public int nb_dev { get; set; }
         public int nb_chef_proj { get; set; }
-        public int efficience { get; set; }
+        public float efficience { get; set; }
         public int duree_embauche { get; set; }
         public int duree_avt_efficacite { get; set; }
         public string projects { get; set; }

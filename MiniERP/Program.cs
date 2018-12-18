@@ -38,6 +38,7 @@ namespace MiniERP
         {
             DateTime dateDebut = DateTime.Parse(cas.date_depart);
             List<Projet> projetsCas = new List<Projet>();
+            float coeffEfficience = getCoeffEfficience(cas);
 
             using (StreamReader r = new StreamReader("..\\..\\config\\projets.json"))
             {
@@ -59,6 +60,10 @@ namespace MiniERP
                 bool retardMgt = false;
                 foreach (Projet proj in projetsCas)
                 {
+                    // Application du coefficient d'efficience
+                    proj.nb_dev_days = int.Parse((proj.nb_dev_days * coeffEfficience).ToString());
+                    proj.nb_mgt_days = int.Parse((proj.nb_mgt_days * coeffEfficience).ToString());
+
                     // Deadline du projet
                     DateTime deadline = DateTime.Parse(proj.deadline);
 
@@ -166,10 +171,17 @@ namespace MiniERP
                         }
                     }
 
-                    Console.WriteLine("Cas rélaisable avec ressources supplémentaires suivantes: " + nbDevSupp + " développeur(s); " + nbMgtSupp + " chefs de projet(s).");
+                    Console.WriteLine("Cas réalisable avec ressources supplémentaires suivantes: " + nbDevSupp + " développeur(s); " + nbMgtSupp + " chefs de projet(s).");
                 }
             }
             return "";
+        }
+
+        private static float getCoeffEfficience(Cas cas)
+        {
+            float f = (100 - (cas.efficience - 100)) / 100;
+            int i = 0;
+            return ((100-(cas.efficience-100))/100);
         }
     }
 }
