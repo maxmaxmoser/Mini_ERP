@@ -1,6 +1,9 @@
 # Mini_ERP
 Projet développé en C# par David Marck, Maxime Moser, Mohammed Zeammari, Sakina Mamodaly 
 
+Lien vers le projet sur github : https://github.com/maxmaxmoser/Mini_ERP
+
+
 Contexte : 
 -----------
 Le but du projet est de créer une application qui permet de calculer le nombre de ressources (chef de projet et développeur) nécessaire pour réaliser les projets saisis dans cette dernière. Elle permet de répondre aux questions de l'énoncé fourni par le professeur. 
@@ -44,6 +47,9 @@ Pour rajouter un projet il suffit de rajouter une entrée dans le fichier projec
 
 
 Pour rajouter un cas (nombre d'employé, efficience ...) il suffit de rajouter une entrée dans le fichier cas.json.
+
+Voir le Wiki créé sur le repository github https://github.com/maxmaxmoser/Mini_ERP/wiki pour une explication détaillée (avec images) de l'utilisation de l'exécutable.
+
 
 
 ----------------------------------------------------------------------------------------------------------------------------------------
