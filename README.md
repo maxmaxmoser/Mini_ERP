@@ -37,7 +37,7 @@ Le fichier de paramétrage projects.json  prend en compte les paramètres suivan
 ----------------------------------------------------------------------------------------------------------------------------------------
 Utilisation de la Console :
 ----------------------------
-La console présente 3 options représentant les cas des questions A,B,C et D. Un booléen a été ajouté pour prendre en compte la question E. Donc pour toutes les questions si on a activé la question E, alors si un projet entraine un retard le processus d'embauche en fonction des ressources nécessaires est enclenchée, donc les nouveaux embauchés ne commenceront a travaillé que 4 mois (80 jrs) après leur embauche.
+La console présente 3 options représentant les cas des questions A,B,C et D. Un booléen a été ajouté pour prendre en compte la question E. Donc pour toutes les questions si on a activé la question E, alors si un projet entraîne un retard le processus d'embauche en fonction des ressources nécessaires est enclenchée, donc les nouveaux embauchés ne commenceront a travailler que 4 mois (80 jrs) après leur embauche.
 
 
 Pour choisir une option il suffit de saisir le numéro associé décrit dans la console. 
