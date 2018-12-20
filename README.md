@@ -96,6 +96,7 @@ alors en ayant une efficacité de 120%  et en refaisant le calcul, le projet se 
 
 Dans la théorie pure, la date serait résolvable. Néanmoins, celle-ci n'est pas vraiment raisonable. En effet  le projet serait terminé la veille, 
 ce qui fait que le moindre retard ou incident par rapport à toute la planification pourrait empêcher le rendu avant la deadline.
+
 La fin étant prévue le 31/12 en raison de la phase de gestion, nous préconisons d'y ajouter un nouveau gestionnaire (en contrat de sous-traitance) 
 pendant au moins la moitiée du projet. La marge avant la deadline sera donc plus grande.
 
