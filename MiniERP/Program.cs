@@ -24,7 +24,7 @@ namespace MiniERP
                 string continuer = "y";
                 while(continuer.Equals("y"))
                 {
-                    Console.WriteLine("\nQuel cas voulez-vous traiter?");
+                    Console.WriteLine("\nQuel cas voulez-vous traiter? (id)");
                     Console.Write("-->");
                     int response;
                     while (!int.TryParse(Console.ReadLine(), out response)
@@ -75,10 +75,13 @@ namespace MiniERP
 
         private static string CheckLivraisons(Cas cas, bool delais_embauche_actif)
         {
-            DateTime dateDebut = DateTime.Parse(cas.date_depart);
+            DateTime dateDebutDev = DateTime.Parse(cas.date_depart);
+            DateTime dateDebutMgt = DateTime.Parse(cas.date_depart);
+
             List<Projet> projetsCas = new List<Projet>();
             float coeffEfficience = getCoeffEfficience(cas);
 
+            // On commence par récupérer les informations des projets du cas traité
             using (StreamReader r = new StreamReader("..\\..\\config\\projets.json"))
             {
                 string json = r.ReadToEnd();
@@ -94,6 +97,7 @@ namespace MiniERP
                     }
                 }
                 
+                // Ensuite pour chaque projet on calcule les dates prévues de fin (dev & mgt) et on vérifie si il y a retard de livraison
                 bool retard = false;
                 bool retardDev = false;
                 bool retardMgt = false;
@@ -103,41 +107,42 @@ namespace MiniERP
                     decimal nb_dev_days = (decimal)(proj.nb_dev_days * coeffEfficience);
                     decimal nb_mgt_days = (decimal)(proj.nb_mgt_days * coeffEfficience);
 
-                    if((nb_dev_days - Math.Truncate(nb_dev_days) > 0))
+                    if ((nb_dev_days - Math.Truncate(nb_dev_days) > 0))
                     {
-                        nb_dev_days = (int)nb_dev_days + 1 ;
+                        nb_dev_days = (int)nb_dev_days + 1;
                     }
 
                     if ((nb_mgt_days - Math.Truncate(nb_mgt_days) > 0))
                     {
                         nb_mgt_days = (int)nb_mgt_days + 1;
                     }
-                    
+
                     proj.nb_dev_days = int.Parse(nb_dev_days.ToString());
                     proj.nb_mgt_days = int.Parse(nb_mgt_days.ToString());
-
 
                     // Deadline du projet
                     DateTime deadline = DateTime.Parse(proj.deadline);
 
-                    // Calcul des dates prévues de fin de projet
-                    DateTime finPrevueDev = dateDebut.AddBusinessDays(proj.nb_dev_days / cas.nb_dev).AddDays(-1);
-                    DateTime finPrevueMgt = dateDebut.AddBusinessDays(proj.nb_mgt_days / cas.nb_chef_proj).AddDays(-1);
+                    // Calcul des dates prévues de fin de projet (dev & mgt)
+                    DateTime finPrevueDev = dateDebutDev.AddBusinessDays(proj.nb_dev_days / cas.nb_dev).AddDays(-1);
+                    DateTime finPrevueMgt = dateDebutMgt.AddBusinessDays(proj.nb_mgt_days / cas.nb_chef_proj).AddDays(-1);
 
                     Console.Write("Date de fin prévue - projet " + proj.nom + ": ");
                     if (finPrevueDev > finPrevueMgt)
                     {
-                        Console.WriteLine(finPrevueDev);
-                        dateDebut = finPrevueDev;
+                        Console.WriteLine(finPrevueDev);                       
                     }
                     else
                     {
-                        Console.WriteLine(finPrevueMgt);
-                        dateDebut = finPrevueMgt;
+                        Console.WriteLine(finPrevueMgt);                    
                     }
 
+                    // Pour le prochain projet, les dates de débuts de dev & mgt
+                    dateDebutDev = finPrevueDev;
+                    dateDebutMgt = finPrevueMgt;
+
                     // Check si retard de livraison
-                    if(deadline < finPrevueDev || deadline < finPrevueMgt)
+                    if (deadline < finPrevueDev || deadline < finPrevueMgt)
                     {
                         Console.BackgroundColor = ConsoleColor.Red;
                         Console.WriteLine("/!\\ Projet " + proj.nom + " : RETARD DE LIVRAISON /!\\ (deadline le " + proj.deadline + ")");
@@ -156,9 +161,12 @@ namespace MiniERP
                         }
                     }
 
-                    dateDebut = dateDebut.AddBusinessDays(1);
+                    dateDebutDev = dateDebutDev.AddBusinessDays(1);
+                    dateDebutMgt = dateDebutMgt.AddBusinessDays(1);
                 }
 
+                // On recalcule les dates de fin en ajoutant progressivement des ressources (selon le type de retard)
+                // Et on affiche les ressources nécessaires pour une livvraison dans les temps
                 if (retard)
                 {
                     int nb_jours_avant_activite = (cas.duree_avt_efficacite + cas.duree_embauche) * 4 * 5;  //80
@@ -188,7 +196,8 @@ namespace MiniERP
                         }
 
                         // on remet les compteurs à zéro
-                        dateDebut = DateTime.Parse(cas.date_depart);
+                        dateDebutDev = DateTime.Parse(cas.date_depart);
+                        dateDebutMgt = DateTime.Parse(cas.date_depart);
                         retard = false;
                         retardDev = false;
                         retardMgt = false;
@@ -332,8 +341,9 @@ namespace MiniERP
                                     retardMgt = true;
                                 }
                             }
-
-                            dateDebut.AddDays(1);
+                                                        
+                            dateDebutDev.AddDays(1);
+                            dateDebutMgt.AddDays(1);
                         }
                     }
 
@@ -345,10 +355,7 @@ namespace MiniERP
 
         private static float getCoeffEfficience(Cas cas)
         {
-            float f = (100 - (cas.efficience - 100)) / 100;
             return ((100-(cas.efficience-100))/100);
         }
     }
 }
-
-// Quand deadline égale, on priorise le projet qui prend le moins de temps
