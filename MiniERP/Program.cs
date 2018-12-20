@@ -14,7 +14,7 @@ namespace MiniERP
             Console.WriteLine("========= Jeuxsuilpatron MiniERP project ========");
             Console.WriteLine("=================================================");
 
-            using (StreamReader r = new StreamReader("..\\..\\config\\cas.json"))
+            using (StreamReader r = new StreamReader("config\\cas.json"))
             {
                 string json = r.ReadToEnd();
                 CasList items = JsonConvert.DeserializeObject<CasList>(json);
@@ -82,7 +82,7 @@ namespace MiniERP
             float coeffEfficience = getCoeffEfficience(cas);
 
             // On commence par récupérer les informations des projets du cas traité
-            using (StreamReader r = new StreamReader("..\\..\\config\\projets.json"))
+            using (StreamReader r = new StreamReader("config\\projets.json"))
             {
                 string json = r.ReadToEnd();
                 ProjetsList items = JsonConvert.DeserializeObject<ProjetsList>(json);
