@@ -26,5 +26,3 @@ seraient nécessaires ?
  5-Sachant qu'un processus d'embauche dure généralement 3 mois et que la (ou
 les) personne(s) embauchée(s) sera(ont) efficace(s) au bout d'un mois
 supplémentaire, combien de personnes devraient être embauchées ?
-
-![Alt text](/images/console_ui.png?raw=true "Console UI")
