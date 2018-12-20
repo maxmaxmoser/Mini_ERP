@@ -44,18 +44,19 @@ Pour rajouter un cas (nombre d'employé, efficience ...) il suffit de rajouter u
 Question A-B : 
 --------------
 Hypothèses :	
-	- Le premier projet commence le vendredi 1/6
-	- On réalise les projet en allant de celui à la deadline la plus proche à la plus éloignée
-	- Si des projets ont une deadline identique, on commence par le plus court
-	- Quand les employés finissent un projet, ils attaquent le suivant le jour de travail qui provient
-	- On résonne en semaine de travail (5 jours par semaine)
-	- Nous sommes constitués d'employés fidèles qui sont immunisé à toutes maladies, qui ne pose jamais congés et qui travaillent tous les jours férié
-	- Les projets ne sont pas réalisés en parallèle (un employé ne fait qu'un projet après l'autre)
-	- Les employés se répartissent les tâches de manière équitable
-	- Dès l'instant qu'un jour est entamé dans le temps de travail, on l'arrondi au supérieur (Ex : 18,25 jours : on indiquera qu'il faut 19 jours) 
+- Le premier projet commence le vendredi 1/6
+- On réalise les projet en allant de celui à la deadline la plus proche à la plus éloignée
+- Si des projets ont une deadline identique, on commence par le plus court
+- Quand les employés finissent un projet, ils attaquent le suivant le jour de travail qui provient
+- On résonne en semaine de travail (5 jours par semaine)
+- Nous sommes constitués d'employés fidèles qui sont immunisé à toutes maladies, qui ne pose jamais congés et qui travaillent tous les jours férié
+- Les projets ne sont pas réalisés en parallèle (un employé ne fait qu'un projet après l'autre)
+- Les employés se répartissent les tâches de manière équitable
+- Dès l'instant qu'un jour est entamé dans le temps de travail, on l'arrondi au supérieur (Ex : 18,25 jours : on indiquera qu'il faut 19 jours) 
 
 Réponse : 				
 Oui, nous somme en capacité de livrer les 3 solutions aux clients dans le délais imparti.				
+
 
 Pour voir la simulation que nous avons effectuée, voir la page "Questions A-B" du fichier simulationHumaine.xls  
 
@@ -65,11 +66,12 @@ Question C :
 ------------
 Hypothèses : 
 
-	- Toutes les hypothèses des questions suivantes sont appliquées
-	- Une efficience de travail à 80% implique qu'il faudra 20% de temps en plus pour réaliser un travail	
+- Toutes les hypothèses des questions suivantes sont appliquées
+- Une efficience de travail à 80% implique qu'il faudra 20% de temps en plus pour réaliser un travail	
 
 Réponse : 
 Avec 80% d'efficcience, nous somme en capacité de livrer les 3 solutions aux clients dans le délais imparti.
+
 
 Pour voir la simulation que nous avons effectuée, voir la page "Questions C" du fichier simulationHumaine.xls  
 
@@ -77,8 +79,9 @@ Pour voir la simulation que nous avons effectuée, voir la page "Questions C" du
 Question D : 
 ------------
 Hypothèses :	
-	- Toutes les hypothèses des questions suivantes sont appliquées
-	- Une efficience de travail à 120% implique qu'il faudra 20% de temps en moins pour réaliser un travail	
+- Toutes les hypothèses des questions suivantes sont appliquées
+- Une efficience de travail à 120% implique qu'il faudra 20% de temps en moins pour réaliser un travail	
+
 
 Réponse : 															
 Nous ne pouvons pas valider la date du 1/01/2019 pour livrer le projet SONI. D'après le tableau présenté dans le fichier simulationHumaine.xls, on remarque que 
