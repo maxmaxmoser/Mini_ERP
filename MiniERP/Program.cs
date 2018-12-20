@@ -208,6 +208,10 @@ namespace MiniERP
                         int nb_jours_prevu_mgt;
                         int nb_jours_avec_aide = 0;
                         int nb_jours_sans_aide = 0;
+
+                        decimal jours_avec_nouveaux_emps;
+                        decimal jours_sans_nouveaux_emps;
+
                         DateTime finPrevueDev;
                         DateTime finPrevueMgt;
 
@@ -216,95 +220,65 @@ namespace MiniERP
                             // Deadline du projet
                             DateTime deadline = DateTime.Parse(proj.deadline);
 
-                            // cas avec respect des délais d'embauche + efficience
+                            // cas avec respect des délais d'embauche + efficience (Question E)
                             if(delais_embauche_actif)
                             {
-                                nb_jours_prevu_dev = nb_jours_tot_dev + proj.nb_dev_days;  // 60 + 30
+                                // Prévisions sur le nombre de jours atteints une fois le projet pris en compte
+                                nb_jours_prevu_dev = nb_jours_tot_dev + proj.nb_dev_days;  
                                 nb_jours_prevu_mgt = nb_jours_tot_mgt + proj.nb_mgt_days;
 
-                                // =< 80; on incrémente la date sans compter les nouveaux
+                                // si les nouveaux développeurs ne seront pas prêts pour travailler durant le pojet, on ne les comptes pas dans le calcul.
                                 if (nb_jours_prevu_dev <= nb_jours_avant_activite)
                                 {
-                                    finPrevueDev = dateDebut.AddBusinessDays(proj.nb_dev_days / cas.nb_dev).AddDays(-1);
+                                    finPrevueDev = dateDebutDev.AddBusinessDays(proj.nb_dev_days / cas.nb_dev).AddDays(-1); // incrémentation de la fin prévue pour les développeurs
                                 }
+                                // sinon...
                                 else
                                 {
-                                    // si on vient de passer dans les 80 jours    (90 > 80)
+                                    // Cas où les nouveaux développeurs commencent à travailler durant le projet
                                     if (nb_jours_tot_dev <= nb_jours_avant_activite)
                                     {
-                                        nb_jours_avec_aide = nb_jours_prevu_dev - nb_jours_avant_activite;   // ex ou on est a un total de 90 jours avec un projet de 30 jours (60)  :  nb_jours avec aide = 90 - 80 = 10
-                                        nb_jours_sans_aide = nb_jours_prevu_dev - nb_jours_tot_dev - nb_jours_avec_aide; // nb_jours sans aide : 90 - 60 -10 = 20
+                                        nb_jours_avec_aide = nb_jours_prevu_dev - nb_jours_avant_activite;   // Calcul du nombre de jours où les nouveaux développeurs seront ajoutés au travail
+                                        nb_jours_sans_aide = nb_jours_prevu_dev - nb_jours_tot_dev - nb_jours_avec_aide; // Calcul du nombre de jours sans les nouveaux développeurs
 
-                                        finPrevueDev = dateDebut.AddBusinessDays((nb_jours_sans_aide / (cas.nb_dev)) + (nb_jours_sans_aide / (cas.nb_dev + nbDevSupp))).AddDays(-1);  // ajoute 20 / dev std   + 10/ devstd + news
+                                        jours_sans_nouveaux_emps = Math.Ceiling((decimal)nb_jours_sans_aide / (cas.nb_dev));
+                                        jours_avec_nouveaux_emps = (nb_jours_avec_aide / (cas.nb_dev + nbDevSupp));
+
+                                        finPrevueDev = dateDebutDev.AddBusinessDays((int)jours_sans_nouveaux_emps + (int)jours_avec_nouveaux_emps);  // incrémentation de la fin prévue pour les développeurs
                                     }
+                                    // Cas où les nouveaux développeurs tavaillent depuis le début du projet
                                     else
                                     {
-                                        finPrevueDev = dateDebut.AddBusinessDays(proj.nb_dev_days / (cas.nb_dev + nbDevSupp)).AddDays(-1);
+                                        finPrevueDev = dateDebutDev.AddBusinessDays(proj.nb_dev_days / (cas.nb_dev + nbDevSupp)).AddDays(-1); // incrémentation de la fin prévue pour les développeurs
                                     }
 
                                 }
-                                // =< 80; on incrémente sans compter les nouveaux
+
+                                // si les nouveaux chefs de projets ne seront pas prêts pour travailler durant le pojet, on ne les comptes pas dans le calcul.
                                 if (nb_jours_tot_mgt <= nb_jours_avant_activite)
                                 {
-                                    finPrevueMgt = dateDebut.AddBusinessDays(proj.nb_mgt_days / cas.nb_chef_proj).AddDays(-1);
+                                    finPrevueMgt = dateDebutMgt.AddBusinessDays(proj.nb_mgt_days / cas.nb_chef_proj).AddDays(-1); // incrémentation de la fin prévue pour les chefs de projets
                                 }
                                 else
                                 {
+                                    // Cas où les nouveaux chefs de projets commencent à travailler durant le projet
                                     if (nb_jours_tot_mgt <= nb_jours_avant_activite)
                                     {
-                                        nb_jours_avec_aide = nb_jours_prevu_mgt - nb_jours_avant_activite;   // ex ou on est a un total de 90 jours avec un projet de 30 jours (60)  :  nb_jours avec aide = 90 - 80 = 10
-                                        nb_jours_sans_aide = nb_jours_prevu_mgt - nb_jours_tot_mgt - nb_jours_avec_aide; // nb_jours sans aide : 90 - 60 -10 = 20
+                                        nb_jours_avec_aide = nb_jours_prevu_mgt - nb_jours_avant_activite;   // Calcul du nombre de jours où les nouveaux développeurs seront ajoutés au travail
+                                        nb_jours_sans_aide = nb_jours_prevu_mgt - nb_jours_tot_mgt - nb_jours_avec_aide; // Calcul du nombre de jours sans les nouveaux développeurs
 
-                                        finPrevueMgt = dateDebut.AddBusinessDays((nb_jours_sans_aide / (cas.nb_chef_proj)) + (nb_jours_sans_aide / (cas.nb_dev + nbMgtSupp))).AddDays(-1);
+                                        jours_sans_nouveaux_emps = Math.Ceiling((decimal)nb_jours_sans_aide / (cas.nb_chef_proj));
+                                        jours_avec_nouveaux_emps = (nb_jours_avec_aide / (cas.nb_chef_proj + nbMgtSupp));
+
+                                        finPrevueMgt = dateDebutMgt.AddBusinessDays((int)jours_sans_nouveaux_emps + (int)jours_avec_nouveaux_emps);  // incrémentation de la fin prévue pour les développeurs
                                     }
                                     else
                                     {
-                                        finPrevueMgt = dateDebut.AddBusinessDays(proj.nb_mgt_days / (cas.nb_chef_proj + nbMgtSupp)).AddDays(-1);
+                                        finPrevueMgt = dateDebutMgt.AddBusinessDays(proj.nb_mgt_days / (cas.nb_chef_proj + nbMgtSupp)).AddDays(-1); // incrémentation de la fin prévue pour les chefs de projets
                                     }
                                 }
-                                nb_jours_prevu_dev = nb_jours_tot_dev + proj.nb_dev_days;  // 60 + 30
-                                nb_jours_prevu_mgt = nb_jours_tot_mgt + proj.nb_mgt_days;
-
-                                // =< 80; on incrémente la date sans compter les nouveaux
-                                if (nb_jours_prevu_dev <= nb_jours_avant_activite)
-                                {
-                                    finPrevueDev = dateDebut.AddBusinessDays(proj.nb_dev_days / cas.nb_dev).AddDays(-1);
-                                }
-                                else
-                                {
-                                    // si on vient de passer dans les 80 jours    (90 > 80)
-                                    if (nb_jours_tot_dev <= nb_jours_avant_activite)
-                                    {
-                                        nb_jours_avec_aide = nb_jours_prevu_dev - nb_jours_avant_activite;   // ex ou on est a un total de 90 jours avec un projet de 30 jours (60)  :  nb_jours avec aide = 90 - 80 = 10
-                                        nb_jours_sans_aide = nb_jours_prevu_dev - nb_jours_tot_dev - nb_jours_avec_aide; // nb_jours sans aide : 90 - 60 -10 = 20
-
-                                        finPrevueDev = dateDebut.AddBusinessDays((nb_jours_sans_aide / (cas.nb_dev)) + (nb_jours_sans_aide / (cas.nb_dev + nbDevSupp))).AddDays(-1);  // ajoute 20 / dev std   + 10/ devstd + news
-                                    }
-                                    else
-                                    {
-                                        finPrevueDev = dateDebut.AddBusinessDays(proj.nb_dev_days / (cas.nb_dev + nbDevSupp)).AddDays(-1);
-                                    }
-
-                                }
-                                // =< 80; on incrémente sans compter les nouveaux
-                                if (nb_jours_tot_mgt <= nb_jours_avant_activite)
-                                {
-                                    finPrevueMgt = dateDebut.AddBusinessDays(proj.nb_mgt_days / cas.nb_chef_proj).AddDays(-1);
-                                }
-                                else
-                                {
-                                    if (nb_jours_tot_mgt <= nb_jours_avant_activite)
-                                    {
-                                        nb_jours_avec_aide = nb_jours_prevu_mgt - nb_jours_avant_activite;   // ex ou on est a un total de 90 jours avec un projet de 30 jours (60)  :  nb_jours avec aide = 90 - 80 = 10
-                                        nb_jours_sans_aide = nb_jours_prevu_mgt - nb_jours_tot_mgt - nb_jours_avec_aide; // nb_jours sans aide : 90 - 60 -10 = 20
-
-                                        finPrevueMgt = dateDebut.AddBusinessDays((nb_jours_sans_aide / (cas.nb_chef_proj)) + (nb_jours_sans_aide / (cas.nb_dev + nbMgtSupp))).AddDays(-1);
-                                    }
-                                    else
-                                    {
-                                        finPrevueMgt = dateDebut.AddBusinessDays(proj.nb_mgt_days / (cas.nb_chef_proj + nbMgtSupp)).AddDays(-1);
-                                    }
-                                }
+                                
+                                // Actualisation des dates
                                 nb_jours_tot_dev = nb_jours_prevu_dev;
                                 nb_jours_tot_mgt = nb_jours_prevu_mgt;
                             }
@@ -312,19 +286,12 @@ namespace MiniERP
                             else
                             {
                                 // Calcul des dates prévues de fin de projet
-                                finPrevueDev = dateDebut.AddBusinessDays(proj.nb_dev_days / (cas.nb_dev + nbDevSupp)).AddDays(-1);
-                                finPrevueMgt = dateDebut.AddBusinessDays(proj.nb_mgt_days / (cas.nb_chef_proj + nbMgtSupp)).AddDays(-1);
+                                finPrevueDev = dateDebutDev.AddBusinessDays(proj.nb_dev_days / (cas.nb_dev + nbDevSupp)).AddDays(-1);
+                                finPrevueMgt = dateDebutMgt.AddBusinessDays(proj.nb_mgt_days / (cas.nb_chef_proj + nbMgtSupp)).AddDays(-1);
                             }
                             
-
-                            if (finPrevueDev > finPrevueMgt)
-                            {
-                                dateDebut = finPrevueDev;
-                            }
-                            else
-                            {
-                                dateDebut = finPrevueMgt;
-                            }
+                            dateDebutDev = finPrevueDev;
+                            dateDebutMgt = finPrevueMgt;
 
                             // Check si retard de livraison
                             if (deadline < finPrevueDev || deadline < finPrevueMgt)
