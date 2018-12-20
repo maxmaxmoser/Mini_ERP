@@ -27,5 +27,6 @@ seraient nécessaires ?
 les) personne(s) embauchée(s) sera(ont) efficace(s) au bout d'un mois
 supplémentaire, combien de personnes devraient être embauchées ?
 
-![GitHub Logo](/images/console_ui.png)
+![GitHub Logo](Mini_ERP/images/console_ui.PNG)
 Format: ![Alt Text](url)
+      
