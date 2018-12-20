@@ -105,8 +105,8 @@ Pour voir la simulation que nous avons effectuée, voir la page "Questions D" du
 Question E:
 -----------
 Hypothèses : 	
-	- Toutes les hypothèses des questions suivantes sont appliquées
-	- les processus d'embauche débutent le 01/06						
-	- On considère qu'un nouvel employé ne travaille pas sur un projet tant qu'il n'est pas effectif (4 mois, soit 80 jours)						
+- Toutes les hypothèses des questions suivantes sont appliquées
+- les processus d'embauche débutent le 01/06						
+- On considère qu'un nouvel employé ne travaille pas sur un projet tant qu'il n'est pas effectif (4 mois, soit 80 jours)						
 
 Pour voir la simulation que nous avons effectuée, voir la page "Questions E" du fichier simulationHumaine.xls  
